@@ -61,7 +61,7 @@ public class HelloWorld extends HttpServlet {
 		// 测试提交表单的
 
 		String action = request.getParameter("action");
-		System.out.println("message" + "1");
+		System.out.println(action + "action");
 		
 	 if ("login".equals(action)) {
 			String name = request.getParameter("name");

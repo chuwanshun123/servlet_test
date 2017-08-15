@@ -24,5 +24,16 @@
 		删除超过ID:<input type="text" name="id1" /> <input type="submit"
 			value="提交" />
 	</form>
+	
+		<br />
+			<br />
+	h1>文件上传实例 - 菜鸟教程</h1>
+<form method="post" action="Uploadfiles1" enctype="multipart/form-data">
+	选择一个文件:
+	<input type="file" name="uploadFile" />
+	<br/><br/>
+	<input type="submit" value="上传" />
+</form>
+	
 </body>
 </html>

@@ -10,7 +10,7 @@
 	<p>用户注册</p>
 		<br />
 	
-<form action="Testmysql1?action=login_sign_complete" method="post">  
+<form action="index.jsp?action=login_sign_complete" method="post">  
        用户名:<input type="text" name="name" />  
        邮箱:<input type="text" name="email" />  
        密码:<input type="password" name="password" />      

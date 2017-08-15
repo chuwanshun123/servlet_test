@@ -13,20 +13,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.mysql.jdbc.PreparedStatement;
 
 /**
  * Servlet implementation class Testmysql
  */
-@WebServlet("/Testmysql")
+@WebServlet("/Testmysql1")
 public class Testmysql extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	// JDBC 驱动名及数据库 URL
+	// JDBC 椹卞姩鍚嶅強鏁版嵁搴� URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/test";
 
-	// 数据库的用户名与密码，需要根据自己的设置
+	// 鏁版嵁搴撶殑鐢ㄦ埛鍚嶄笌瀵嗙爜锛岄渶瑕佹牴鎹嚜宸辩殑璁剧疆
 	static final String USER = "root";
 	static final String PASS = "123456";
 
@@ -49,17 +50,17 @@ public class Testmysql extends HttpServlet {
 
 		java.sql.Statement stmt = null;
 		java.sql.PreparedStatement ps = null;
-		// 设置响应内容类型
+		// 璁剧疆鍝嶅簲鍐呭绫诲瀷
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		String title = "Servlet Mysql 测试 - 菜鸟教程";
+		String title = "Servlet Mysql 娴嬭瘯 - 鑿滈笩鏁欑▼";
 		String action = request.getParameter("action");
 
 		try {
-			// 注册 JDBC 驱动器
+			// 娉ㄥ唽 JDBC 椹卞姩鍣�
 			Class.forName("com.mysql.jdbc.Driver");
 
-			// 打开一个连接
+			// 鎵撳紑涓�涓繛鎺�
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			if ("login_input".equals(action)) {
 				stmt = conn.createStatement();
@@ -71,26 +72,28 @@ public class Testmysql extends HttpServlet {
 				
 			
 				while (rs.next()) {
-					System.out.println(rs.getString("username").equals(User_name)+"111");
-					System.out.println(rs.getString("password").equals(request.getParameter("password"))+"22");	
+					
 					if(rs.getString("username").equals(User_name)&&rs.getString("password").equals(request.getParameter("password"))){
+						HttpSession session=request.getSession();
+						session.setAttribute("user",User_name); 
 						request.getRequestDispatcher("login.jsp").forward(request, response);
-						break;
+						return;
 					}
 				}
+				request.getRequestDispatcher("index.jsp").forward(request, response);
 				
 			} else if ("login_mysql".equals(action)) {
 				// request.getRequestDispatcher("login.jsp").forward(request,
 				// response);
-				System.out.println("进入更新。。。");
+				System.out.println("杩涘叆鏇存柊銆傘�傘��");
 
-				// 编写预处理 SQL 语句
+				// 缂栧啓棰勫鐞� SQL 璇彞
 				String sql = "INSERT INTO websites VALUES(?,?,?,?,?)";
 
-				// 实例化 PreparedStatement
+				// 瀹炰緥鍖� PreparedStatement
 				ps = conn.prepareStatement(sql);
 
-				// 传入参数，这里的参数来自于一个带有表单的jsp文件，很容易实现
+				// 浼犲叆鍙傛暟锛岃繖閲岀殑鍙傛暟鏉ヨ嚜浜庝竴涓甫鏈夎〃鍗曠殑jsp鏂囦欢锛屽緢瀹规槗瀹炵幇
 				ps.setString(1, request.getParameter("id"));
 				ps.setString(2, request.getParameter("name"));
 				ps.setString(3, request.getParameter("url"));
@@ -98,40 +101,40 @@ public class Testmysql extends HttpServlet {
 				ps.setString(5, request.getParameter("country"));
 
 				ps.executeUpdate();
-				System.out.println("数据库更新成功？");
+				System.out.println("鏁版嵁搴撴洿鏂版垚鍔燂紵");
 			} else if ("login_mysql_delete".equals(action)) {
 				int idd = Integer.parseInt(request.getParameter("id1"));
 				String sql_detele = "DELETE FROM websites WHERE id>" + idd;
 				ps = conn.prepareStatement(sql_detele);
 				ps.executeUpdate();
-				// 执行 SQL 查询
+				// 鎵ц SQL 鏌ヨ
 				stmt = conn.createStatement();
 				String sql1;
 				sql1 = "SELECT id, name, url FROM websites";
 				ResultSet rs = (stmt).executeQuery(sql1);
-				out.println("数据库内容列表");
+				out.println("鏁版嵁搴撳唴瀹瑰垪琛�");
 				out.println("<br />");
 				out.println("<br />");
 				out.println("<br />");
 				out.println("<br />");
 				
-				// 展开结果集数据库
+				// 灞曞紑缁撴灉闆嗘暟鎹簱
 				while (rs.next()) {
-					// 通过字段检索
+					// 閫氳繃瀛楁妫�绱�
 					int id = rs.getInt("id");
 					String name = rs.getString("name");
 					String url = rs.getString("url");
 
-					// 输出数据
+					// 杈撳嚭鏁版嵁
 
 					out.println("ID: " + id);
-					out.println(", 站点名称: " + name);
-					out.println(", 站点 URL: " + url);
+					out.println(", 绔欑偣鍚嶇О: " + name);
+					out.println(", 绔欑偣 URL: " + url);
 					out.println("<br />");
 				}
 				out.println("</body></html>");
 				
-				// 完成后关闭
+				// 瀹屾垚鍚庡叧闂�
 				rs.close();
 				(stmt).close();
 				conn.close();
@@ -140,7 +143,7 @@ public class Testmysql extends HttpServlet {
 				String sql2 = "INSERT INTO data VALUES(?,?,?)";
 				ps = conn.prepareStatement(sql2);
 
-				// 传入参数，这里的参数来自于一个带有表单的jsp文件，很容易实现
+				// 浼犲叆鍙傛暟锛岃繖閲岀殑鍙傛暟鏉ヨ嚜浜庝竴涓甫鏈夎〃鍗曠殑jsp鏂囦欢锛屽緢瀹规槗瀹炵幇
 				String User_name = request.getParameter("name");
 				String User_email = request.getParameter("email");
 				String User_password = request.getParameter("password");
@@ -159,13 +162,13 @@ public class Testmysql extends HttpServlet {
 			
 					
 					} catch (SQLException se) {
-						// 处理 JDBC 错误
+						// 澶勭悊 JDBC 閿欒
 						se.printStackTrace();
 					} catch (Exception e) {
-						// 处理 Class.forName 错误
+						// 澶勭悊 Class.forName 閿欒
 						e.printStackTrace();
 					} finally {
-						// 最后是用于关闭资源的块
+						// 鏈�鍚庢槸鐢ㄤ簬鍏抽棴璧勬簮鐨勫潡
 						try {
 							if (stmt != null)
 								(stmt).close();

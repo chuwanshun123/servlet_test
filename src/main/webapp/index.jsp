@@ -18,7 +18,7 @@
     </form> 
 	<br />
 	
-<form action="demo?action=login_sign" method="post">  
+<form action="HelloWorld?action=login_sign" method="post">  
        用户注册:<input type="submit" value="提交" />  
     </form> 
 

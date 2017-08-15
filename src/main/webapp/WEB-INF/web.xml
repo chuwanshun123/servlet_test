@@ -10,7 +10,7 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <filter>
-    <filter-name>HelloWorldFilter</filter-name>
+    <filter-name>TestFilter</filter-name>
     <filter-class>ces.group.TestFilter</filter-class>
     <init-param>
       <param-name>Site11111</param-name>
@@ -18,8 +18,8 @@
     </init-param>
   </filter>
   <filter-mapping>
-    <filter-name>HelloWorldFilter</filter-name>
-    <url-pattern>/demo</url-pattern>
+    <filter-name>TestFilter</filter-name>
+    <url-pattern>/login1.jsp</url-pattern>
   </filter-mapping>
   <servlet>
     <servlet-name>HelloWorld</servlet-name>
@@ -27,15 +27,18 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>HelloWorld</servlet-name>
-    <url-pattern>/demo</url-pattern>
+    <url-pattern>/demo1</url-pattern>
   </servlet-mapping>
-  
+
     <servlet>
     <servlet-name>Testmysql1</servlet-name>
     <servlet-class>ces.group.Testmysql</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Testmysql1</servlet-name>
-    <url-pattern>/Testmysql1</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
+ 
+
+ 
 </web-app>
